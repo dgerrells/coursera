@@ -58,11 +58,11 @@ public class Percolation {
 		}
 		this.system.union(this.getUFIndex(srcX, srcY), this.getUFIndex(dstX, dstY));
 	}
-
+ 
 
 	/**
 	 * Open the given cell in the system
-	 * Not zero-based indexing
+	 * Not zero-based indexing 
 	 * @param x the x coordinate
 	 * @param y the y coordinate
 	 */
@@ -70,9 +70,10 @@ public class Percolation {
 		this.validateInput(x, y);
 		this.grid[x-1][y-1] = true;
 		this.openSites++;
-		if (x == 1) {
+		if (y == 1) {
 			this.system.union(this.getUFIndex(x, y), this.top);
-		} else if(x == this.systemSize) {
+		}
+		if (y == this.systemSize) {
 			this.system.union(this.getUFIndex(x, y), this.bottom);
 		}
 		
