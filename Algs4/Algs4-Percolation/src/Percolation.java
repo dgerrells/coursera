@@ -16,7 +16,7 @@ public class Percolation {
 	/** the systems grid size */
 	private final int systemSize;
 	/** the top component of the system */
-	private final int top = 0;
+	private final int top;
 	/** the bottom component of the system */
 	private final int bottom;
 	/** the number of open sites on the system */
@@ -33,17 +33,18 @@ public class Percolation {
 			throw new IllegalArgumentException("Invalid argument paased to constructor: "+n);
 		}
 		final int squaredSize = n*n;
+		this.top = 0;
 		this.systemSize = n;
 		this.system = new WeightedQuickUnionUF(squaredSize+2);
 		this.grid = new boolean[this.systemSize][this.systemSize];
 		this.bottom = squaredSize +1;
 	}
 	
-	int getUFIndex(final int x, final int y) {
+	private int getUFIndex(final int x, final int y) {
 		return this.systemSize*(x-1) + y;
 	}
 	
-	void validateInput(final int row, final int col) {
+	private void validateInput(final int row, final int col) {
 		if (row < 1 || row > this.systemSize) {
 			throw new IndexOutOfBoundsException("Row index given is out of range: " + row);
 		}
@@ -52,11 +53,11 @@ public class Percolation {
 		}
 	}
 
-	void tryUnion(final int srcX, final int srcY, final int dstX, final int dstY) {
+	private void tryUnion(final int srcX, final int srcY, final int dstX, final int dstY) {
 		if (dstX < 1 || dstY < 1 || dstX > this.systemSize || dstY > this.systemSize || !this.isOpen(dstX,dstY)) {
 			return;
 		}
-		this.system.union(this.getUFIndex(srcX, srcY), this.getUFIndex(dstX, dstY));
+		this.system.union(this.getUFIndex(dstX, dstY), this.getUFIndex(srcX, srcY));
 	}
  
 
@@ -68,12 +69,15 @@ public class Percolation {
 	 */
 	public void open(final int x, final int y) {
 		this.validateInput(x, y);
+		if (this.isOpen(x, y)) {
+			return;
+		}
 		this.grid[x-1][y-1] = true;
 		this.openSites++;
-		if (y == 1) {
+		if (x == 1) {
 			this.system.union(this.getUFIndex(x, y), this.top);
 		}
-		if (y == this.systemSize) {
+		if (x == this.systemSize) {
 			this.system.union(this.getUFIndex(x, y), this.bottom);
 		}
 		

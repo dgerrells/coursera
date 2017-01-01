@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.princeton.cs.algs4.StdOut;
+
 public class PercolationTest {
 
 	Percolation perc;
@@ -93,12 +95,28 @@ public class PercolationTest {
 	}
 
 	@Test
+	public void percolates_ItShouldPerc2() {
+		this.perc = new Percolation(5);
+		this.perc.open(1, 1);
+		this.perc.open(2, 1);
+		this.perc.open(3, 1);
+		this.perc.open(5, 2);
+		StdOut.println(this.perc.isFull(3, 1));
+		StdOut.println(this.perc.isFull(5, 2));
+		this.perc.open(5, 4);
+		StdOut.println(this.perc.isFull(5, 4));
+		this.perc.open(4, 1);
+		this.perc.open(5, 1);
+		StdOut.println(this.perc.isFull(5, 4));
+	}
+
+	@Test
 	public void percolates_ItShouldPerc() {
 		this.perc = new Percolation(4);
 		this.perc.open(1, 1);
-		this.perc.open(1, 2);
-		this.perc.open(1, 3);
-		this.perc.open(1, 4);
+		this.perc.open(2, 1);
+		this.perc.open(3, 1);
+		this.perc.open(4, 1);
 		assertEquals(this.perc.percolates(), true);
 	}
 
